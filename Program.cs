@@ -1,4 +1,4 @@
-using Carties.Data;
+using AuctionService.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

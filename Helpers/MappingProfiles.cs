@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using Carties.DTOs;
-using Carties.Entities;
+﻿using AuctionService.DTOs;
+using AuctionService.Entities;
+using AutoMapper;
 
-namespace Carties.Helpers
+namespace AuctionService.Helpers
 {
     public class MappingProfiles : Profile
     {
@@ -13,7 +13,7 @@ namespace Carties.Helpers
             CreateMap<CreateAuctionDTO, Auction>()
                 .ForMember(d => d.Item, o => o.MapFrom(s => s));
             CreateMap<CreateAuctionDTO, Item>();
-            
+
         }
     }
 }

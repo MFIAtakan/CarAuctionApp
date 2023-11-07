@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Carties.DTOs
+namespace AuctionService.DTOs
 {
     public class CreateAuctionDTO
     {

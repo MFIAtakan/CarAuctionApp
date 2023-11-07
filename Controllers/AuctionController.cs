@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using Carties.Data;
-using Carties.DTOs;
-using Carties.Entities;
+﻿using AuctionService.Data;
+using AuctionService.DTOs;
+using AuctionService.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Carties.Controllers
+namespace AuctionService.Controllers
 {
     [ApiController]
     [Route("api/auction")]
@@ -14,7 +14,7 @@ namespace Carties.Controllers
         private readonly AuctionDbContext _context;
         private readonly IMapper _mapper;
 
-        public AuctionController(AuctionDbContext auctionDbContext,IMapper mapper) 
+        public AuctionController(AuctionDbContext auctionDbContext, IMapper mapper)
         {
             _context = auctionDbContext;
             _mapper = mapper;
@@ -35,10 +35,10 @@ namespace Carties.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AuctionDTO>> GetAuctionById(Guid id)
         {
-            var auction = await _context.Auctions.Include(x=> x.Item)
-                .FirstOrDefaultAsync(x=> x.Id == id);
+            var auction = await _context.Auctions.Include(x => x.Item)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            if(auction == null) return NotFound();
+            if (auction == null) return NotFound();
 
             return _mapper.Map<AuctionDTO>(auction);
         }
@@ -46,7 +46,7 @@ namespace Carties.Controllers
         [HttpPost]
         public async Task<ActionResult<AuctionDTO>> CreateAuction(CreateAuctionDTO createAuctionDTO)
         {
-            var auction = _mapper.Map<Auction> (createAuctionDTO);
+            var auction = _mapper.Map<Auction>(createAuctionDTO);
             // TODO: add current user as seller.
             auction.Seller = "test";
             _context.Auctions.Add(auction);
@@ -57,15 +57,15 @@ namespace Carties.Controllers
                 return BadRequest("Could not save changes to DB");
             }
 
-            return CreatedAtAction(nameof(GetAuctionById), new {auction.Id},_mapper.Map<AuctionDTO>(auction);
+            return CreatedAtAction(nameof(GetAuctionById), new { auction.Id }, _mapper.Map<AuctionDTO>(auction));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAuction(Guid id,UpdateAuctionDTO updateAuctionDTO)
+        public async Task<ActionResult> UpdateAuction(Guid id, UpdateAuctionDTO updateAuctionDTO)
         {
-            var auction = await _context.Auctions.Include(x=> x.Item).FirstOrDefaultAsync(x=> x.Id == id);
+            var auction = await _context.Auctions.Include(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
 
-            if(auction==null) return NotFound();
+            if (auction == null) return NotFound();
 
             // TODO: check seller==username
 
@@ -87,7 +87,7 @@ namespace Carties.Controllers
         {
             var auction = await _context.Auctions.FindAsync(id);
 
-            if(auction==null) return NotFound();
+            if (auction == null) return NotFound();
 
             // TODO: check seller = username 
 

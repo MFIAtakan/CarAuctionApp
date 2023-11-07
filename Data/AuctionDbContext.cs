@@ -1,7 +1,7 @@
-﻿using Carties.Entities;
+﻿using AuctionService.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Carties.Data
+namespace AuctionService.Data
 {
     public class AuctionDbContext : DbContext
     {
