@@ -40,4 +40,33 @@ Frontend Technologies
 - **Component-based application development**
 
 
+Application Setup 
+------------------
+You can run this application by following the instructions below;
+
+1) First of al create a foler in your computer and clone the project using git command below.
+   ```bash
+   https://github.com/MFIAtakan/CarAuctionApp.git
+2) Ensure that docker is already installed in your computer.
+3) Execute the commands below in order.
+   
+   ```bash
+   cd Carties
+4) Now let`s build the docker files.
+   ```bash
+   docker compose build
+5) Time to reflect build result to our docker application by using comand below.
+   ```bash
+   docker compose up -d
+
+After these steps you will see in your docker desktop applition all services up and running. However, if some of the ports are already being used in your system from other services, you may need
+to change ports in docker-compose.yml file and rebuild it.
+
+To see the interface please go directory and run the client application. After starting client, you can use application on http://localhost:3000
+
+  ```bash
+  cd src/client/web-app
+
+  ```bash
+  npm run dev
 
