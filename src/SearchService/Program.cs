@@ -17,11 +17,11 @@ builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolic
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search",false));
+
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
 
     x.UsingRabbitMq((context, cfg) =>
     {
-
         cfg.UseRetry(r =>
         {
             r.Handle<RabbitMqConnectionException>();
@@ -31,18 +31,20 @@ builder.Services.AddMassTransit(x =>
         cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
         {
             host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
-            host.Username(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
-
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
         });
 
         cfg.ReceiveEndpoint("search-auction-created", e =>
         {
             e.UseMessageRetry(r => r.Interval(5, 5));
+
             e.ConfigureConsumer<AuctionCreatedConsumer>(context);
         });
+
         cfg.ConfigureEndpoints(context);
     });
 });
+
 
 var app = builder.Build();
 
@@ -53,7 +55,7 @@ app.MapControllers();
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
     await Policy.Handle<TimeoutException>()
-        .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(10))
+        .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(60))
         .ExecuteAndCaptureAsync(async () => await DbInitializer.InitDb(app));
 
 });
@@ -64,4 +66,4 @@ static IAsyncPolicy<HttpResponseMessage> GetPolicy()
     => HttpPolicyExtensions
         .HandleTransientHttpError()
         .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound)
-        .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(3));
+        .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(60));
