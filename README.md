@@ -64,9 +64,13 @@ to change ports in docker-compose.yml file and rebuild it.
 
 To see the interface please go directory and run the client application. After starting client, you can use application on http://localhost:3000
 
-  ```bash
-  cd src/client/web-app
+Go to directory.
 
-  ```bash
-  npm run dev
+    ```bash
+    cd src/client/web-app
+    
+Run the client application
+
+   ```bash
+    npm run dev
 
