@@ -66,7 +66,7 @@ To see the interface please go directory and run the client application. After s
 
 Go to directory.
 
-    ```bash
+    
     cd src/client/web-app
     
 Run the client application
